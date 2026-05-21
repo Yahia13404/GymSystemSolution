@@ -1,3 +1,6 @@
+using GymSystem.DAL.Contexts;
+using GymSystem.DAL.Repositories.Interfaces;
+
 namespace GymSystem
 {
     public class Program
@@ -8,7 +11,8 @@ namespace GymSystem
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddDbContext<GymDbContext>();
+            builder.Services.AddScoped<IPlanRepository, DAL.Repositories.Classes.PlanRepository>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -17,7 +21,7 @@ namespace GymSystem
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
-            }
+            }   
 
             app.UseHttpsRedirection();
             app.UseRouting();
