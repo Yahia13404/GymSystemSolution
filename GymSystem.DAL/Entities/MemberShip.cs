@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GymSystem.DAL.Entities
 {
-    public class MemberShip
+    public class MemberShip : BaseEntity
     {
         public Member Member { get; set; } = null!;
         public int MemberId { get; set; }

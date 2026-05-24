@@ -10,4 +10,8 @@
     <ProjectReference Include="..\GymSystem.DAL\GymSystem.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewModels\MembersViewModels\" />
+  </ItemGroup>
+
 </Project>
