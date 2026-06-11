@@ -56,10 +56,10 @@ namespace GymSystem.DAL.Repositories.Classes
             return await entity.FirstOrDefaultAsync(predicate, ct);
 
         }
-
-        public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, bool isTracked = false, CancellationToken ct = default)
+        public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken ct = default)
         {
             return await dpContext.Set<TEntity>().AnyAsync(predicate, ct);
+
         }
     }
 }
