@@ -5,6 +5,9 @@ using GymSystem.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using GymSystem.DAL.Repositories.Classes;
+using AutoMapper;
+using GymSystem.DAL.Entities;
+using GymSystem.BLL.Utilities;
 
 namespace GymSystem
 {
@@ -22,9 +25,16 @@ namespace GymSystem
             });
             
            //builder.Services.AddScoped<IPlanRepository, DAL.Repositories.Classes.PlanRepository>();
-           //builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(DAL.Repositories.Classes.GenericRepository<>));
-           builder.Services.AddScoped<IMemberServices , MemberServices>();
-           builder.Services.AddScoped<IUnitOfWork, UnitOfWork >();
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(DAL.Repositories.Classes.GenericRepository<>));
+            builder.Services.AddScoped<IMemberServices , MemberServices>();
+            builder.Services.AddScoped<ISessionServices, SessionServices>();
+            builder.Services.AddScoped<ITrainerServices, TrainerServices>();
+            builder.Services.AddScoped<IPlanServices, PlanServices>();
+
+
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork >();           
+            builder.Services.AddAutoMapper(m=>m.AddProfile(new MappingProfile()));
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

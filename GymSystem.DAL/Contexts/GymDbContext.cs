@@ -13,6 +13,8 @@ namespace GymSystem.DAL.Contexts
 {
     public class GymDbContext: DbContext
     {
+       
+
         //override protected void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
         //    optionsBuilder.UseSqlServer("Server=.;database=GymDb;trusted_connection=True;trustServerCertificate=True");
@@ -20,16 +22,23 @@ namespace GymSystem.DAL.Contexts
         public GymDbContext(DbContextOptions<GymDbContext> options):base(options) 
         {
             
+            
         }
-        override protected void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration<Plan>(new PlanConfigurations());
-            modelBuilder.ApplyConfiguration<Member>(new MemberConfigurations());
+            modelBuilder.Entity<Session>()
+                .ToTable("Session");
+
+            modelBuilder.ApplyConfiguration(new PlanConfigurations());
+            modelBuilder.ApplyConfiguration(new MemberConfigurations());
+
+            base.OnModelCreating(modelBuilder);
         }
-        
+
         public DbSet<Plan> Plans { get; set; }
         public DbSet<Member> Members { get; set; }
 
-
+        public DbSet<Session> Sessions { get; set; }
+        public DbSet<Booking> Booking { get; set; }
     }
 }

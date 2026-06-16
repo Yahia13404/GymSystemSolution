@@ -51,7 +51,7 @@ namespace GymSystem.DAL.Migrations
 
                     b.HasIndex("SessionId");
 
-                    b.ToTable("Booking");
+                    b.ToTable("bookings");
                 });
 
             modelBuilder.Entity("GymSystem.DAL.Entities.Category", b =>
@@ -289,7 +289,7 @@ namespace GymSystem.DAL.Migrations
 
                     b.HasIndex("TrainerId");
 
-                    b.ToTable("Session");
+                    b.ToTable("Sessions");
                 });
 
             modelBuilder.Entity("GymSystem.DAL.Entities.Trainer", b =>

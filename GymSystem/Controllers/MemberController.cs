@@ -1,4 +1,5 @@
-﻿using GymSystem.BLL.Services.Intrterfaces;
+﻿using GymSystem.BLL.Services.Classes;
+using GymSystem.BLL.Services.Intrterfaces;
 using GymSystem.BLL.ViewModels.MembersViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -28,10 +29,10 @@ namespace GymSystem.Controllers
         {
             if (!ModelState.IsValid) return View(nameof(Create), model);
             var Result = await memberServices.CreateMemberAsync(model, ct);
-            if (Result)
+            if (Result.IsSuccess)
                 TempData["Success"] = "Member Created Successfully";
             else
-                TempData["Error"] = "Failed to Create Member";
+                TempData["Error"] =Result.Error;
 
             return RedirectToAction(nameof(Index));
         }
@@ -57,6 +58,63 @@ namespace GymSystem.Controllers
             }
             return View(HealthRecordDetails);
         }
-        
+
+        [HttpGet]
+        public async Task<IActionResult> EditMember(int id , CancellationToken ct)
+        {
+            var Member = await memberServices.GetMemberToUpdateAsync(id, ct);
+            if (Member is null)
+            {
+                TempData["ErrorMessage"] = "Member not found.";
+                return RedirectToAction("Index");
+            }
+            return View(Member);
+
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> EditMember(int id, MemberToUpdateViewModel model ,CancellationToken ct)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var Result = await memberServices.UpdateMemberDetailsAsynce(id,model ,ct);
+            if (Result.IsSuccess)
+            {
+                TempData["SuccessMessage"] = "Member updated successfully!";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["ErrorMessage"] = Result.Error;
+
+                return RedirectToAction("Index"); 
+            }
+        }
+        public async Task<IActionResult> Delete(int id, CancellationToken ct)
+        {
+            var Member = await memberServices.GetMemberByIdAsync(id, ct);
+            if (Member is null)
+            {
+                TempData["ErrorMessage"] = "Member not found.";
+                return RedirectToAction("Index");
+            }
+            return View(Member);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteConfirmed(int id , CancellationToken ct)
+        {
+            var Result = await memberServices.DeleteMemberAsync(id, ct);
+
+            TempData[Result.IsSuccess ? "SuccessMessage" : "ErrorMessage"] = Result.IsSuccess ? "Member deleted successfully!" : Result.Error;
+            return RedirectToAction("Index");
+        }
+
+
+
     }
 }
