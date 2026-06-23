@@ -1,4 +1,4 @@
-﻿using GymSystem.DAL.Contexts;
+﻿using GymSystem.DAL.Data.Contexts;
 using GymSystem.DAL.Entities;
 using GymSystem.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -14,9 +14,12 @@ namespace GymSystem.DAL.Repositories.Classes
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity, new()
     {
         private readonly GymDbContext dpContext;
-        public GenericRepository(GymDbContext dbContext)
+        private readonly DbSet<TEntity> set;
+
+        public GenericRepository(GymDbContext dbContext )
         {
             dpContext = dbContext;
+            set = dbContext.Set<TEntity>();
 
         }
         public async Task<IEnumerable<TEntity>> GetAll(bool isTracked, CancellationToken ct = default)
@@ -61,5 +64,8 @@ namespace GymSystem.DAL.Repositories.Classes
             return await dpContext.Set<TEntity>().AnyAsync(predicate, ct);
 
         }
+
+        public Task<int> CountAsync(Expression<Func<TEntity, bool>>? predicate = null, CancellationToken ct = default)
+       => predicate is null ? set.AsNoTracking().CountAsync(ct) : set.AsNoTracking().CountAsync(predicate, ct);
     }
 }

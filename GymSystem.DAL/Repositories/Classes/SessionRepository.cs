@@ -1,4 +1,4 @@
-﻿using GymSystem.DAL.Contexts;
+﻿using GymSystem.DAL.Data.Contexts;
 using GymSystem.DAL.Entities;
 using GymSystem.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;

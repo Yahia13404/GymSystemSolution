@@ -1,17 +1,19 @@
-﻿using GymSystem.DAL.Configurations;
+﻿
+using GymSystem.DAL.Data.Configurations;
 using GymSystem.DAL.Entities;
-using GymSystemG03.DAL.Configurations;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GymSystem.DAL.Contexts
+namespace GymSystem.DAL.Data.Contexts
 {
-    public class GymDbContext: DbContext
+    public class GymDbContext: IdentityDbContext<ApplicationUser>
     {
        
 
@@ -26,14 +28,17 @@ namespace GymSystem.DAL.Contexts
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Session>()
                 .ToTable("Session");
 
-            modelBuilder.ApplyConfiguration(new PlanConfigurations());
-            modelBuilder.ApplyConfiguration(new MemberConfigurations());
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-            base.OnModelCreating(modelBuilder);
+            
         }
+
+
 
         public DbSet<Plan> Plans { get; set; }
         public DbSet<Member> Members { get; set; }

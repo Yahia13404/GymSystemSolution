@@ -10,7 +10,7 @@ namespace GymSystem.DAL.Repositories.Interfaces
 {
     public interface IGenericRepository<TEntity> where TEntity : BaseEntity,new()
     {
-        Task<IEnumerable<TEntity>> GetAll(bool isTracked, CancellationToken ct = default);
+        Task<IEnumerable<TEntity>> GetAll(bool isTracked = false, CancellationToken ct = default);
         Task<TEntity?> GetById(int id, CancellationToken ct = default);
         void Add(TEntity entity);
         void Update(TEntity entity);
@@ -19,6 +19,7 @@ namespace GymSystem.DAL.Repositories.Interfaces
         Task<TEntity?> FirstOrDefultAsync(Expression<Func<TEntity, bool>> predicate , bool isTracked = false, CancellationToken ct = default);
         Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate,CancellationToken ct = default);
 
+        Task<int> CountAsync(Expression<Func<TEntity , bool>>? predicate = null,CancellationToken ct = default);
 
 
     }

@@ -1,15 +1,28 @@
 using System.Diagnostics;
+using System.Threading.Tasks;
+using GymSystem.BLL.Services.Intrterfaces;
 using GymSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymSystem.Controllers
 {
-    public class HomeController : Controller
+    [Authorize]
+    public class HomeController : Controller 
     {
-        
-        public IActionResult Index()
+        private readonly ILogger<HomeController> logger;
+        private readonly IAnalyticsServices analyticsServices;
+
+        public HomeController(ILogger<HomeController> logger , IAnalyticsServices analyticsServices )
         {
-            return View();
+            this.logger = logger;
+            this.analyticsServices = analyticsServices;
+        }
+
+        public async Task<IActionResult> Index(CancellationToken ct)
+        {
+            var Data =await analyticsServices.GetAnalyticsDataAsync(ct);
+            return View(Data);
         }
 
         public IActionResult Privacy()

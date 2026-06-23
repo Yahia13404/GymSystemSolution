@@ -2,16 +2,18 @@
 using GymSystem.BLL.Services.Intrterfaces;
 using GymSystem.BLL.ViewModels.MembersViewModels;
 using GymSystem.BLL.ViewModels.PlansViewModels;
-using GymSystem.DAL.Contexts;
+using GymSystem.DAL.Data.Contexts;
 using GymSystem.DAL.Entities;
 using GymSystem.DAL.Repositories.Classes;
 using GymSystem.DAL.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace GymSystem.Controllers
 {
+    [Authorize]
     public class PlanController : Controller
     {
         private readonly IPlanServices planServise;

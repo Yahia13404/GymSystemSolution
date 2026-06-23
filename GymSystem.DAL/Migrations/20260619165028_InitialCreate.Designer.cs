@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GymSystem.DAL.Migrations
 {
     [DbContext(typeof(GymDbContext))]
-    [Migration("20260604231428_FixMemberTableName")]
-    partial class FixMemberTableName
+    [Migration("20260619165028_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -156,7 +156,6 @@ namespace GymSystem.DAL.Migrations
                         .HasColumnType("varchar");
 
                     b.Property<string>("Photo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -293,7 +292,7 @@ namespace GymSystem.DAL.Migrations
 
                     b.HasIndex("TrainerId");
 
-                    b.ToTable("Session");
+                    b.ToTable("Session", (string)null);
                 });
 
             modelBuilder.Entity("GymSystem.DAL.Entities.Trainer", b =>

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GymSystemG03.DAL.Configurations
+namespace GymSystem.DAL.Data.Configurations
 {
     public class PlanConfigurations:IEntityTypeConfiguration<Plan>
     {

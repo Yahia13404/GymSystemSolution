@@ -13,11 +13,13 @@ namespace GymSystem.BLL.Services.Classes
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
+        private readonly IAttachmentServices attachmentServices;
 
-        public MemberServices(IUnitOfWork unitOfWork, IMapper mapper )
+        public MemberServices(IUnitOfWork unitOfWork, IMapper mapper ,IAttachmentServices attachmentServices)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.attachmentServices = attachmentServices;
         }
         public async Task<IEnumerable<MemberViewModel>> GetAllMembersAsync(CancellationToken ct = default)
         {
@@ -69,8 +71,15 @@ namespace GymSystem.BLL.Services.Classes
             var emailExist = await unitOfWork.GetRepository<Member>().AnyAsync(m => m.Email == model.Email, ct);
             var phoneExist = await unitOfWork.GetRepository<Member>().AnyAsync(m => m.Phone == model.Phone, ct);
             if (emailExist || phoneExist) return result.Validation("Email Or phone already exist ");
+            var member = unitOfWork.GetRepository<Member>();
             var Mappedmember = mapper.Map<CreateMemberViewModel, Member>(model);
-            var member = unitOfWork.GetRepository<Member>(); member.Add(Mappedmember);
+            var NewPhotoName = await attachmentServices.UploadAsync(model.PhotoFile.OpenReadStream(), model.PhotoFile.FileName, "MembersPictures");
+            if (string.IsNullOrEmpty(NewPhotoName))
+            {
+                return result.Validation("photo is not valid "); 
+            }    
+            Mappedmember.Photo = NewPhotoName;
+            member.Add(Mappedmember);
             var Result = await unitOfWork.CompleteAsync();
             return Result > 0 ? result.Ok() : result.Fail("Failed to create Member");
         }  
@@ -102,7 +111,13 @@ namespace GymSystem.BLL.Services.Classes
             {
                 return result.NotFound("Member is not found");
             }
+           
             memberRepo.Delete(memberID);
+            if (member.Photo is not null)
+            {
+               attachmentServices.Delete(member.Photo, "MembersPictures");
+
+            }
             var Result = await unitOfWork.CompleteAsync();
             return Result > 0 ? result.Ok() : result.Fail("Failed to remove member");
 
