@@ -7,6 +7,15 @@
       </PropertyGroup>
 
       <ItemGroup>
+        <Content Include="MembersPictures\68e33597-45ec-49cb-94c6-8c2b687ecbf8.jpg" />
+        <Content Include="MembersPictures\6efe9390-55e5-42de-afad-3c3023b059e3.jpg" />
+        <Content Include="MembersPictures\d61dbed8-e0c1-4abd-9a2c-79ca2e45704d.jpg" />
+        <Content Include="MembersPictures\dc2f7995-d1b4-4908-9e9f-ad0d6f8c4c67.jpg" />
+        <Content Include="MembersPictures\e905f50a-c4c8-4864-9eb3-a05458a8dee6.jpg" />
+        <Content Include="MembersPictures\f83a4577-4e77-41ee-a5f6-80207d4664f5.jpg" />
+      </ItemGroup>
+
+      <ItemGroup>
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.12" />
       </ItemGroup>
 

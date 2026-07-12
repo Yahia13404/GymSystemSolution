@@ -30,13 +30,23 @@ namespace GymSystem
 
            //builder.Services.AddScoped<IPlanRepository, DAL.Repositories.Classes.PlanRepository>();
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(DAL.Repositories.Classes.GenericRepository<>));
+            builder.Services.AddScoped<IMemberShipRepository, MemberShipRepository>();
+            builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+            builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+
+
             builder.Services.AddScoped<IMemberServices , MemberServices>();
             builder.Services.AddScoped<ISessionServices, SessionServices>();
             builder.Services.AddScoped<ITrainerServices, TrainerServices>();
             builder.Services.AddScoped<IPlanServices, PlanServices>();
+            builder.Services.AddScoped<IMemberShipServices, MemberShipServices>();
+            builder.Services.AddScoped<IBookingServices, BookingServices>();
+
             builder.Services.AddScoped<IAnalyticsServices ,AnalyticsServices>();
             builder.Services.AddScoped<IAttachmentServices , AttachmentServices>();
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork >();      
+
             builder.Services.AddIdentity<ApplicationUser , IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 6;

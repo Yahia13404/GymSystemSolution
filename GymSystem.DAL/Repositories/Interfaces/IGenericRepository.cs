@@ -15,6 +15,8 @@ namespace GymSystem.DAL.Repositories.Interfaces
         void Add(TEntity entity);
         void Update(TEntity entity);
         void Delete(int id);
+        void Delete(TEntity entity);
+
         Task<int> ComoleteAsync();
         Task<TEntity?> FirstOrDefultAsync(Expression<Func<TEntity, bool>> predicate , bool isTracked = false, CancellationToken ct = default);
         Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate,CancellationToken ct = default);

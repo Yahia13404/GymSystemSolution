@@ -48,6 +48,10 @@ namespace GymSystem.DAL.Repositories.Classes
                 dpContext.Remove(entity);
             }
         }
+        public void Delete(TEntity entity)
+        {
+            dpContext.Set<TEntity>().Remove(entity);
+        }
         public async Task<int> ComoleteAsync()
         {
             return await dpContext.SaveChangesAsync();

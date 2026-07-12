@@ -11,10 +11,12 @@ namespace GymSystem.Controllers
     public class MemberController : Controller
     {
         private readonly IMemberServices memberServices;
+        private readonly IAttachmentServices attachmentServices;
 
-        public MemberController(IMemberServices memberServices)
+        public MemberController(IMemberServices memberServices , IAttachmentServices attachmentServices)
         {
             this.memberServices = memberServices;
+            this.attachmentServices = attachmentServices;
         }
         public async Task<IActionResult> Index(CancellationToken ct)
         {
@@ -116,7 +118,20 @@ namespace GymSystem.Controllers
             return RedirectToAction("Index");
         }
 
+        public async Task<IActionResult> Pictures(int id, CancellationToken ct)
+        {
+            var member = await memberServices.GetMemberByIdAsync(id, ct);
 
+            if (member == null || string.IsNullOrEmpty(member.Photo))
+            {
+                return NotFound();
+            }
+
+            var (stream, contentType) =
+                attachmentServices.GetFile(member.Photo, "MembersPictures");
+
+            return File(stream, contentType);
+        }
 
     }
 }

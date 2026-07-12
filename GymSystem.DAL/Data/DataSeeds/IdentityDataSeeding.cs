@@ -60,7 +60,7 @@ namespace GymSystem.DAL.Data.DataSeeds
                 }
                 return;
             }
-            catch(Exception ex ) { logger.LogError("Failed To seed Identity Data");
+            catch(Exception ex ) { logger.LogError( ex , "Failed To seed Identity Data");
                 throw;
             }
 

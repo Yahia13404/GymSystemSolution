@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GymSystem.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class TrainerController : Controller
     {
         private readonly ITrainerServices trainerServices;

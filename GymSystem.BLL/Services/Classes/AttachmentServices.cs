@@ -1,5 +1,6 @@
 ﻿using GymSystem.BLL.Services.Intrterfaces;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace GymSystem.BLL.Services.Classes
             this.env = env;
         }
         private readonly long maxFileSize = 5 * 1024 * 1024;
-        private readonly string[] allowedExtensions = { ".jpg", ".jpeg", "png" };
+        private readonly string[] allowedExtensions = { ".jpg", ".jpeg", ".png" };
         private readonly ILogger<AttachmentServices> logger;
         private readonly IWebHostEnvironment env;
 
@@ -43,7 +44,23 @@ namespace GymSystem.BLL.Services.Classes
 
         public (Stream stream, string ContentType) GetFile(string fileName, string folderName)
         {
-            throw new NotImplementedException();
+            var fullPath = Path.Combine(env.ContentRootPath, folderName, fileName);
+
+            if (!File.Exists(fullPath))
+            {
+                throw new FileNotFoundException($"File '{fileName}' not found.");
+            }
+
+            var provider = new FileExtensionContentTypeProvider();
+
+            if (!provider.TryGetContentType(fullPath, out var contentType))
+            {
+                contentType = "application/octet-stream";
+            }
+
+            var stream = new FileStream(fullPath, FileMode.Open, FileAccess.Read);
+
+            return (stream, contentType);
         }
 
         public async Task<string?> UploadAsync(Stream fileStream, string fileName, string folderName)

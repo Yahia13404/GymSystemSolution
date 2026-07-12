@@ -119,13 +119,13 @@ namespace GymSystem.Controllers
          
             TempData[Result.IsSuccess ? "SuccessMessage" : "ErrorMessage"] = Result.IsSuccess ? "Session deleted successfully!" : Result.Error;
             return RedirectToAction("Index");
-        }   
-        
+        }
+
 
         private async Task PopulationDropDowns(CancellationToken ct)
         {
-           ViewBag.Trainers = new SelectList(await sessionServices.GetTrainersForDropdownAsync(ct), "Id", "Name");
-           ViewBag.Categories = new SelectList(await sessionServices.GetCategoriesForDropDownAsync(ct), "Id", "CategoryName");
+            ViewBag.Trainers = new SelectList(await sessionServices.GetTrainersForDropdownAsync(ct), "Id", "Name");
+            ViewBag.Categories = new SelectList(await sessionServices.GetCategoriesForDropDownAsync(ct), "Id", "CategoryName");
 
         }
     }

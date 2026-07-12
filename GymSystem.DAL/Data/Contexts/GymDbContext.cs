@@ -32,6 +32,8 @@ namespace GymSystem.DAL.Data.Contexts
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Session>()
                 .ToTable("Session");
+            modelBuilder.Entity<MemberShip>()
+       .ToTable("MemberShip");
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
@@ -45,5 +47,9 @@ namespace GymSystem.DAL.Data.Contexts
 
         public DbSet<Session> Sessions { get; set; }
         public DbSet<Booking> Booking { get; set; }
+
+        public DbSet<Trainer> Trainer { get; set; }
+        public DbSet<MemberShip> MemberShips { get; set; }
+
     }
 }
