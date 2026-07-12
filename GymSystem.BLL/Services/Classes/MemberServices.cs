@@ -93,10 +93,18 @@ namespace GymSystem.BLL.Services.Classes
             var phoneExist = await unitOfWork.GetRepository<Member>().AnyAsync(m => m.Phone == model.Phone && m.Id != id, ct);
             if (emailExist || phoneExist) return result.Fail("Email Or phone already exist");
 
-            mapper.Map(model, member); // ✅ بيعدّل على الـ member الموجود مباشرة
+            var oldName = member.Name;
+
+
+            mapper.Map(model, member);
+
+         
+
+            member.Name = oldName;
+
             member.UpdatedAt = DateTime.Now;
 
-            unitOfWork.GetRepository<Member>().Update(member); // ✅ بعت الـ member المعدّل
+            unitOfWork.GetRepository<Member>().Update(member); 
             var Result = await unitOfWork.CompleteAsync();
 
             return Result > 0 ? result.Ok() : result.Fail("Failed to Update Member");

@@ -18,10 +18,10 @@ using GymSystem.BLL.ViewModels.MembersViewModels;
             {
                 public MappingProfile()
                 {
-                    MapsSession();
-                    MapMemberShip();
+                    MapsSystem();
+                    
         }
-                private void MapsSession()
+                private void MapsSystem()
                 {
                     CreateMap<Session, SessionViewModel>().ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName))
                         .ForMember(dest => dest.TrainerName, opt => opt.MapFrom(src => src.Trainer.Name))
@@ -41,6 +41,7 @@ using GymSystem.BLL.ViewModels.MembersViewModels;
 
 
             CreateMap<Trainer, CreateTrainerViewModel>()
+                 
                 .ForMember(dest => dest.BuildingNumber,
                     opt => opt.MapFrom(src => src.Adress.BuildingNumber))
                 .ForMember(dest => dest.City,
@@ -70,21 +71,27 @@ using GymSystem.BLL.ViewModels.MembersViewModels;
                         $"{src.Adress.BuildingNumber}, {src.Adress.Street}, {src.Adress.City}"));
 
             CreateMap<Member, MemberToUpdateViewModel>()
-                
-                .ForMember(dest => dest.BuildingNumber,
-                    opt => opt.MapFrom(src => src.Adress.BuildingNumber))
-                .ForMember(dest => dest.City,
-                    opt => opt.MapFrom(src => src.Adress.City))
-                .ForMember(dest => dest.Street,
-                    opt => opt.MapFrom(src => src.Adress.Street))
-                .ReverseMap()
-                .ForMember(dest => dest.Adress,
-                    opt => opt.MapFrom(src => new Adress
-                    {
-                        BuildingNumber = src.BuildingNumber,
-                        City = src.City,
-                        Street = src.Street
-                    }));
+     .ForMember(dest => dest.BuildingNumber,
+         opt => opt.MapFrom(src => src.Adress.BuildingNumber))
+     .ForMember(dest => dest.City,
+         opt => opt.MapFrom(src => src.Adress.City))
+     .ForMember(dest => dest.Street,
+         opt => opt.MapFrom(src => src.Adress.Street))
+     .ReverseMap()
+     .ForMember(dest => dest.Adress,
+         opt => opt.MapFrom(src => new Adress
+         {
+             BuildingNumber = src.BuildingNumber,
+             City = src.City,
+             Street = src.Street
+         }))
+     .ForMember(dest => dest.Photo,
+         opt => opt.Ignore());
+
+
+
+
+               
 
             CreateMap<HealthRecord, HealthRecordViewModel>().ReverseMap();
 
@@ -100,7 +107,9 @@ using GymSystem.BLL.ViewModels.MembersViewModels;
                     }))
                 .ReverseMap();
 
-            CreateMap<Plan, PlanViewModel>();
+            CreateMap<Plan, PlanViewModel>()
+                .ForMember(dest => dest.DurationDays  ,
+                opt => opt.MapFrom(src => src.Duration));
 
                     CreateMap<Plan, UpdatePlanViewModel>()
             .ForMember(dest => dest.PlanName,
@@ -112,23 +121,30 @@ using GymSystem.BLL.ViewModels.MembersViewModels;
                 opt => opt.MapFrom(src => src.PlanName))
             .ForMember(dest => dest.Duration,
                 opt => opt.MapFrom(src => src.DurationDays));
-                }
-        private void MapMemberShip()
-        {
+
+
+
+
             CreateMap<MemberShip, MemberShipsViewModel>()
-                .ForMember(dest => dest.MemberName, opt => opt.MapFrom(src => src.Member.Name))
-                .ForMember(dest => dest.PlanName, opt => opt.MapFrom(src => src.Plan.Name))
-                .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.CreatedAt));
+              .ForMember(dest => dest.MemberName, opt => opt.MapFrom(src => src.Member.Name))
+              .ForMember(dest => dest.PlanName, opt => opt.MapFrom(src => src.Plan.Name))
+              .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.CreatedAt));
 
             CreateMap<Member, MemberSelectListViewModel>()
                 .ForMember(d => d.MemberId, o => o.MapFrom(s => s.Id))
-    .ForMember(d => d.MemberName, o => o.MapFrom(s => s.Name)); 
-            CreateMap<Plan , PlanSelectListViewModel>()
+    .ForMember(d => d.MemberName, o => o.MapFrom(s => s.Name));
+            CreateMap<Plan, PlanSelectListViewModel>()
                  .ForMember(d => d.PlanId, o => o.MapFrom(s => s.Id))
     .ForMember(d => d.PlanName, o => o.MapFrom(s => s.Name));
 
 
+
         }
+
+
+
+
+      
     }
 
         }

@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 namespace GymSystem.BLL.ViewModels.MembersViewModels
 {
     public class MemberToUpdateViewModel
-    {
+    { 
+        public int Id { get; set; }
         public string? Name { get; set; }
         public string? Photo { get; set; }
 

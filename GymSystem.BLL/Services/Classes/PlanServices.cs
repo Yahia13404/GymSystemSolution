@@ -24,6 +24,27 @@ namespace GymSystem.BLL.Services.Classes
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
         }
+
+        public async Task<result> ActiveAndDeactivePlan(int PlanId, CancellationToken ct = default)
+        {
+           var plan = await unitOfWork.GetRepository<Plan>().FirstOrDefultAsync( p => p.Id == PlanId);
+            if (plan == null)
+            {
+                return result.NotFound("Plan not found");
+            }
+            if(plan.IsActive)
+            {
+               plan.IsActive = false;
+            }
+            else
+            {
+                plan.IsActive = true;
+            }
+            unitOfWork.GetRepository<Plan>().Update(plan);
+            var Result = await unitOfWork.CompleteAsync();
+            return Result > 0 ? result.Ok() : result.Fail("Failed to Active Or Deactive attendance");
+        }
+
         public async Task<IEnumerable<PlanViewModel>> GetAllPlansAsynce(CancellationToken ct = default)
         {
             var  Plans = await unitOfWork.GetRepository<Plan>().GetAll(false,ct);

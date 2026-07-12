@@ -69,6 +69,21 @@ namespace GymSystem.Controllers
             }
         }
 
+        public async Task<IActionResult> ActiveOrDeactive(int planId, CancellationToken ct)
+        {
+            var Result = await  planServise.ActiveAndDeactivePlan(planId, ct);
+            if (Result.IsSuccess)
+            {
+                TempData["SuccessMessage"] = "Active Or Deactive Successfuly";
+
+            }
+            else
+            {
+                TempData["ErrorMessage"] = Result.Error;
+            }
+            return RedirectToAction("Index");
+        }
+
 
     }
 }

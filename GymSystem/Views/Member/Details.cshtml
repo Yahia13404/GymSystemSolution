@@ -6,10 +6,25 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card card-details border-0 p-2 shadow">
-                <div class="text-center mt-3">
-                    <img src="~/images/User.jpg" alt="MemberName" class="rounded-circle"
-                         style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #fff; margin-top: -60px;" />
-                </div>
+                @if (string.IsNullOrEmpty(Model.Photo))
+                {
+
+                    <div class="text-center mt-3">
+                        <img src="~/images/User.jpg" alt="MemberName" class="rounded-circle"
+                             style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #fff; margin-top: -60px;" />
+                    </div>
+                }
+                else
+                {
+                   
+                
+                    <div class="text-center mt-3">
+                        <img src="@Url.Action("Pictures", "Member", new { id = Model.Id })" alt="@Model.Name" class="rounded-circle"
+                             style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #fff; margin-top: -60px;" />
+                    </div>
+                }
+                
+            
                 <div class="card-body text-center">
                     <h2 class="mb-1 text-primary-color">@Model.Name</h2>
                     <h4 class="mb-2 pb-1 border-bottom d-block">@(Model.PlanName ?? "No Plan") </h4>
